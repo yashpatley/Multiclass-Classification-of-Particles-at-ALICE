@@ -22,17 +22,10 @@ def base_model():
     return model
 
 seed = 42
-df = pd.read_csv("nn_data.csv")
+df = pd.read_csv("Particle_Data.csv")
 df = df.sample(frac=0.5)
 Y = df.iloc[:,3]
 X = df.iloc[:,0:3]
-# print(X)
-# print(Y)
-#
-# print(df.isna().sum())                  # check if anything is missing
-# df = df.dropna()                       # drop any null values in data
-# print(X.describe())                     # statistical summary of the variables
-# print(df.groupby(Y).size())             # check for class imbalance
 
 # Normalize features within range 0 to 1
 sc = MinMaxScaler(feature_range=(0,1))

@@ -1,21 +1,17 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
-from keras.optimizers import Adam, SGD
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
+from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 seed = 42
-df = pd.read_csv("nn_data.csv")
-df = df.sample(frac=0.5)
+df = pd.read_csv("Particle_Data.csv")
+df = df.sample(frac=0.5)                        # Take only 50% of data for training and testing
 
 # pairplots
 sns.pairplot(df.sample(frac=0.5), hue='PID')
@@ -24,11 +20,13 @@ plt.savefig("pp_data.png")
 #print(df)                               # first look at the data
 Y = df.iloc[:,3]
 X = df.iloc[:,0:3]
-# print(X.shape)
 
-#print(df.isna().sum())                  # check if anything is missing
+print("Check for null values: ")
+print(df.isna().sum())                  # check if anything is missing
 #df = df.dropna()                       # drop any null values in data
-#print(X.describe())                     # statistical summary of the variables
+print("Statistical Summary of the Data: ")
+print(X.describe())                     # statistical summary of the variables
+print("Class Imbalance: ")
 print(df.groupby(Y).size())             # check for class imbalance
 
 # Normalize features within range 0 to 1
@@ -89,13 +87,12 @@ plt.savefig("NN_loss.png")
 # Evaluate Model Performance
 results = model.evaluate(x_test, y_test_t)
 print("RESULTS")
-print(results)
+print("Evaluation of model on test data set: ")
+print("Test Loss and Test Accuracy", results)
 
 # All about Confusion Matrix
-print(y_test)
 # Generate predictions
-y_pred = np.argmax(model.predict(x_test),axis=-1)+2
-print(y_pred)
+y_pred = np.argmax(model.predict(x_test),axis=-1)
 
 ConfusionMatrixDisplay.from_predictions(y_test, y_pred)
 plt.title("Confusion Matrix")
@@ -104,7 +101,6 @@ plt.savefig("CM_NN.png")
 # Predicted Outputs
 dic = {"P" : x_test.transpose()[0], "TPC" : x_test.transpose()[1], "TOF": x_test.transpose()[2], "PID" : y_pred}
 df = pd.DataFrame(data=dic)
-print(df)
 
 sns.pairplot(df, hue='PID')
 plt.savefig("pp_NN.png")

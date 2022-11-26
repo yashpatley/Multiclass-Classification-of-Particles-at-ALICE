@@ -8,17 +8,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 seed = 42
-df = pd.read_csv("nn_data.csv")
+df = pd.read_csv("Particle_Data.csv")
 df = df.sample(frac=0.5)
-#print(df)                               # first look at the data
+
 Y = df.iloc[:,3]
 X = df.iloc[:,0:3]
-# print(X.shape)
-
-#print(df.isna().sum())                  # check if anything is missing
-#df = df.dropna()                       # drop any null values in data
-#print(X.describe())                     # statistical summary of the variables
-print(df.groupby(Y).size())             # check for class imbalance
 
 # Normalize features within range 0 to 1
 sc = MinMaxScaler(feature_range=(0,1))
@@ -40,8 +34,8 @@ poly_pred = poly.predict(x_test)
 rbf_pred = rbf.predict(x_test)
 poly_acc = accuracy_score(y_test, poly_pred)
 rbf_acc = accuracy_score(y_test, rbf_pred)
-print("Polynomial Kernel", poly_acc)
-print("RBF Kernel", rbf_acc)
+print("Accuracy Score with Polynomial Kernel", poly_acc)
+print("Accuracy Score with RBF Kernel", rbf_acc)
 
 ConfusionMatrixDisplay.from_predictions(y_test, poly_pred)
 plt.title("Polynomial Predictions")
