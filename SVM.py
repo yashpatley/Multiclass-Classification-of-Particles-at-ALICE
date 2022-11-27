@@ -9,7 +9,7 @@ import seaborn as sns
 
 seed = 42
 df = pd.read_csv("Particle_Data.csv")
-df = df.sample(frac=0.5)
+df = df.sample(frac=0.5, random_state=seed)
 
 Y = df.iloc[:,3]
 X = df.iloc[:,0:3]
