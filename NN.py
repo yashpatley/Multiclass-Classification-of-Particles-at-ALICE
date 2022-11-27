@@ -11,7 +11,7 @@ import seaborn as sns
 
 seed = 42
 df = pd.read_csv("Particle_Data.csv")
-df = df.sample(frac=0.5)                        # Take only 50% of data for training and testing
+df = df.sample(frac=0.5, random_state=seed)                        # Take only 50% of data for training and testing
 
 # pairplots
 sns.pairplot(df.sample(frac=0.5), hue='PID')
